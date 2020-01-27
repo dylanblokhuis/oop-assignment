@@ -1,7 +1,11 @@
 package com.novi.controller;
 
+import com.novi.model.Board;
 import com.novi.model.Game;
 import com.novi.model.Player;
+import com.novi.model.Snake;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.layout.AnchorPane;
 
 public class GameController {
     protected Player player1;
@@ -50,5 +54,49 @@ public class GameController {
         } else {
             currentPlayer = player1;
         }
+    }
+
+    public static void boot(AnchorPane pane) {
+        Canvas canvas = new Canvas(600, 371);
+        Board board = new Board(600, 371, canvas);
+
+        Snake snake = new Snake();
+        snake.update();
+        snake.show(board);
+
+//        context = canvas.getGraphicsContext2D();
+
+//        canvas.setFocusTraversable(true);
+//        canvas.setOnKeyPressed(e -> {
+//            Snake snake = grid.getSnake();
+//            if (loop.isKeyPressed()) {
+//                return;
+//            }
+//            switch (e.getCode()) {
+//                case UP:
+//                    snake.setUp();
+//                    break;
+//                case DOWN:
+//                    snake.setDown();
+//                    break;
+//                case LEFT:
+//                    snake.setLeft();
+//                    break;
+//                case RIGHT:
+//                    snake.setRight();
+//                    break;
+//                case ENTER:
+//                    if (loop.isPaused()) {
+//                        //reset();
+//                        (new Thread(loop)).start();
+//                    }
+//            }
+//        });
+
+        //reset();
+
+        pane.getChildren().add(canvas);
+
+//        (new Thread(loop)).start();
     }
 }
