@@ -23,10 +23,10 @@ public class ViewController implements Initializable {
     TabPane tabs;
 
     @FXML
-    Tab snakeTab;
+    Tab checkersTab;
 
     @FXML
-    AnchorPane snakePane;
+    AnchorPane checkersPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -41,8 +41,8 @@ public class ViewController implements Initializable {
 
         tabs.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> {
-                if (newValue == snakeTab) {
-                    GameController.boot(snakePane);
+                if (newValue == checkersTab) {
+                    new CheckersController(player1, player2).init(checkersPane);
                 }
             }
         );

@@ -1,11 +1,9 @@
 package com.novi.controller;
 
-import com.novi.model.Board;
-import com.novi.model.Game;
-import com.novi.model.Player;
-import com.novi.model.Snake;
+import com.novi.model.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 
 public class GameController {
     protected Player player1;
@@ -18,36 +16,6 @@ public class GameController {
         this.player2 = player2;
     }
 
-    public void init() {
-        System.out.println("Bulls & Cows");
-
-        currentPlayer = player1;
-
-        int difficulty = 1;
-        Game game;
-
-        while (true) {
-            System.out.println("Score " + player1.getScore() + " | " + player1.getScore());
-
-            if (currentPlayer.getScore() == 5) {
-                System.out.println(currentPlayer.getName() + " has won!");
-                break;
-            }
-
-            while (true) {
-                game = new Game(difficulty);
-                boolean isGameWon = game.play(currentPlayer);
-
-                if (isGameWon) {
-                    difficulty++;
-                    break;
-                } else {
-                    switchPlayers();
-                }
-            }
-        }
-    }
-
     public void switchPlayers() {
         if (currentPlayer == player1) {
             currentPlayer = player2;
@@ -56,47 +24,5 @@ public class GameController {
         }
     }
 
-    public static void boot(AnchorPane pane) {
-        Canvas canvas = new Canvas(600, 371);
-        Board board = new Board(600, 371, canvas);
-
-        Snake snake = new Snake();
-        snake.update();
-        snake.show(board);
-
-//        context = canvas.getGraphicsContext2D();
-
-//        canvas.setFocusTraversable(true);
-//        canvas.setOnKeyPressed(e -> {
-//            Snake snake = grid.getSnake();
-//            if (loop.isKeyPressed()) {
-//                return;
-//            }
-//            switch (e.getCode()) {
-//                case UP:
-//                    snake.setUp();
-//                    break;
-//                case DOWN:
-//                    snake.setDown();
-//                    break;
-//                case LEFT:
-//                    snake.setLeft();
-//                    break;
-//                case RIGHT:
-//                    snake.setRight();
-//                    break;
-//                case ENTER:
-//                    if (loop.isPaused()) {
-//                        //reset();
-//                        (new Thread(loop)).start();
-//                    }
-//            }
-//        });
-
-        //reset();
-
-        pane.getChildren().add(canvas);
-
-//        (new Thread(loop)).start();
-    }
+    public void init(AnchorPane pane) { }
 }
