@@ -9,21 +9,42 @@ import javafx.scene.shape.Circle;
  * Leerlijn: Object Oriented Programmeren
  */
 public class Checker extends Circle {
-    private int x = 0;
-    private int y = 0;
+    private int oldX, oldY;
+    private double mouseX, mouseY;
 
     public Checker(int x, int y, Color color) {
         super(15, color);
 
-        this.x = x;
-        this.y = y;
+        // center Checker inside tile
+        setTranslateX(Tile.SIZE / 6.0);
+        setTranslateY(Tile.SIZE / 5.5);
+        relocate(x * Tile.SIZE, y * Tile.SIZE);
+
+        addListeners();
     }
 
-    public int getX() {
-        return x;
+    private void addListeners() {
+        setOnMousePressed(event -> {
+            mouseX = event.getSceneX();
+            mouseY = event.getSceneY();
+
+            System.out.println(mouseX);
+        });
+
+        setOnMouseDragged(event -> {
+            relocate(event.getSceneX() - mouseX + oldX, event.getSceneY() - mouseY + oldY);
+        });
+
+        setOnMouseReleased(event -> {
+            // figure out move logic
+        });
     }
 
-    public int getY() {
-        return y;
+    public boolean move(int x, int y) {
+        oldX = x * Tile.SIZE;
+        oldY =  y * Tile.SIZE;
+        relocate(oldX, oldY);
+
+        return true;
     }
 }
