@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 
-public class App extends Application {
+public class Main extends Application {
     private static SceneController sceneController;
 
     @Override

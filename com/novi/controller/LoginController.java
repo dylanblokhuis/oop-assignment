@@ -1,6 +1,6 @@
 package com.novi.controller;
 
-import com.novi.main.App;
+import com.novi.main.Main;
 import com.novi.model.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -79,7 +79,7 @@ public class LoginController implements Initializable {
         playerController.setPlayer2(player2);
 
         URL mainScenePath = getClass().getResource("/resources/fxml/Main.fxml");
-        SceneController sceneController = App.getSceneController();
+        SceneController sceneController = Main.getSceneController();
         sceneController.startScene(mainScenePath);
     }
 }

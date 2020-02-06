@@ -11,43 +11,27 @@ import javafx.scene.shape.Circle;
  * Leerlijn: Object Oriented Programmeren
  */
 public class Checker extends StackPane {
-    private int oldX, oldY;
-    private double mouseX, mouseY;
+    private int columnIndex, rowIndex;
+    private boolean isBlack;
 
-    public Checker(int x, int y, Color color) {
-        Circle stone = new Circle(15, color);
-        move(x, y);
+    public Checker(int columnIndex, int rowIndex, boolean isBlack) {
+        this.isBlack = isBlack;
+        Circle stone = new Circle(15, isBlack ? Color.BLACK : Color.WHITE);
 
-        // center Checker inside tile
-        setTranslateX(Tile.SIZE / 6.4);
-        setTranslateY(Tile.SIZE / 5.5);
-
-        addListeners();
-
+        this.columnIndex = columnIndex;
+        this.rowIndex = rowIndex;
         getChildren().add(stone);
     }
 
-    private void addListeners() {
-        setOnMousePressed(event -> {
-            mouseX = event.getSceneX();
-            mouseY = event.getSceneY();
-        });
-
-        setOnMouseDragged(event -> {
-            double deltaX = event.getSceneX() - mouseX;
-            double deltaY = event.getSceneY() - mouseY;
-
-            relocate( deltaX + oldX, deltaY + oldY);
-        });
+    public boolean isBlack() {
+        return isBlack;
     }
 
-    public void move(int x, int y) {
-        oldX = x * Tile.SIZE;
-        oldY =  y * Tile.SIZE;
-        relocate(oldX, oldY);
+    public int getColumnIndex() {
+        return columnIndex;
     }
 
-    public void toOldPosition() {
-        relocate(oldX, oldY);
+    public int getRowIndex() {
+        return rowIndex;
     }
 }
