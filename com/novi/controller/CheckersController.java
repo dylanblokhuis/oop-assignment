@@ -44,6 +44,7 @@ public class CheckersController extends GameController {
 
                 if (checker != null) {
                     tile.setChecker(checker);
+                    addMoveListeners(checker);
                     checkers.getChildren().add(checker);
                 }
             }
@@ -69,5 +70,16 @@ public class CheckersController extends GameController {
         }
 
         return checker;
+    }
+
+    private void addMoveListeners(Checker checker) {
+        checker.setOnMouseReleased(event -> {
+            // check move here
+            if (true) {
+//                checker.
+            } else {
+                checker.toOldPosition();
+            }
+        });
     }
 }

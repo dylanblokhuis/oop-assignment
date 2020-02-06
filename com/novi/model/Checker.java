@@ -1,5 +1,7 @@
 package com.novi.model;
 
+import com.novi.controller.CheckersController;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -8,43 +10,44 @@ import javafx.scene.shape.Circle;
  * @date 30-1-2020
  * Leerlijn: Object Oriented Programmeren
  */
-public class Checker extends Circle {
+public class Checker extends StackPane {
     private int oldX, oldY;
     private double mouseX, mouseY;
 
     public Checker(int x, int y, Color color) {
-        super(15, color);
+        Circle stone = new Circle(15, color);
+        move(x, y);
 
         // center Checker inside tile
-        setTranslateX(Tile.SIZE / 6.0);
+        setTranslateX(Tile.SIZE / 6.4);
         setTranslateY(Tile.SIZE / 5.5);
-        relocate(x * Tile.SIZE, y * Tile.SIZE);
 
         addListeners();
+
+        getChildren().add(stone);
     }
 
     private void addListeners() {
         setOnMousePressed(event -> {
             mouseX = event.getSceneX();
             mouseY = event.getSceneY();
-
-            System.out.println(mouseX);
         });
 
         setOnMouseDragged(event -> {
-            relocate(event.getSceneX() - mouseX + oldX, event.getSceneY() - mouseY + oldY);
-        });
+            double deltaX = event.getSceneX() - mouseX;
+            double deltaY = event.getSceneY() - mouseY;
 
-        setOnMouseReleased(event -> {
-            // figure out move logic
+            relocate( deltaX + oldX, deltaY + oldY);
         });
     }
 
-    public boolean move(int x, int y) {
+    public void move(int x, int y) {
         oldX = x * Tile.SIZE;
         oldY =  y * Tile.SIZE;
         relocate(oldX, oldY);
+    }
 
-        return true;
+    public void toOldPosition() {
+        relocate(oldX, oldY);
     }
 }
