@@ -16,9 +16,10 @@ import javafx.scene.shape.Circle;
  */
 public class Tile extends StackPane {
     public static final int SIZE = 45;
-    private Checker checker;
+//    private Checker checker;
     private int x, y;
     private boolean isDark;
+    private boolean isAvailable = false;
 
     public Tile(int x, int y, boolean isDark) {
         this.isDark = isDark;
@@ -50,23 +51,32 @@ public class Tile extends StackPane {
         return y;
     }
 
+    public Checker getChecker() {
+        return (Checker) getChildren().get(0);
+    }
+
     public void setChecker(Checker checker) {
         getChildren().addAll(checker);
 
-        this.checker = checker;
-    }
-
-    public Checker getChecker() {
-        return this.checker;
+//        this.checker = checker;
     }
 
     public boolean hasChecker() {
-        return checker != null;
+        return !getChildren().isEmpty() && getChildren().get(0) != null;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
     }
 
     public void showAvailability() {
-        Circle circle = new Circle(5, Color.GREEN);
-
+        isAvailable = true;
+        Circle circle = new Circle(8, Color.GREEN);
         getChildren().addAll(circle);
+    }
+
+    public void removeAvailability() {
+        isAvailable = false;
+        getChildren().remove(0);
     }
 }
