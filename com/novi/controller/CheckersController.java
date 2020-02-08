@@ -21,10 +21,6 @@ public class CheckersController extends GameController {
     private Tile targetTile;
     private ArrayList<Tile> availableTiles = new ArrayList<Tile>();
 
-//    private Tile[][] board = new Tile[SIZE][SIZE];
-//    private Group tiles = new Group();
-//    private Group checkers = new Group();
-
     public CheckersController(Player player1, Player player2) {
         super(player1, player2);
     }
@@ -68,9 +64,9 @@ public class CheckersController extends GameController {
 
         // should probably make this scale with size
         if (rowIndex < 4 && isEven) {
-            checker = new Checker(columnIndex, rowIndex, true);
+            checker = new Checker(true);
         } else if (rowIndex >= 6 && isEven) {
-            checker = new Checker(columnIndex, rowIndex, false);
+            checker = new Checker(false);
         }
 
         return checker;
@@ -82,6 +78,7 @@ public class CheckersController extends GameController {
             System.out.println("Tile location row: " + tile.getRowIndex());
             if (availableTiles.contains(tile)) {
                 tile.setChecker(selectedChecker);
+                clearMoveOptions();
             }
         });
     }
@@ -96,8 +93,7 @@ public class CheckersController extends GameController {
                 if that's the case remove the availability circles
              */
             if (selectedChecker != null) {
-                availableTiles.forEach(Tile::removeAvailability);
-                availableTiles.clear();
+                clearMoveOptions();
             }
 
             selectedChecker = checker;
@@ -106,18 +102,23 @@ public class CheckersController extends GameController {
     }
 
     private void showMoveOptions(Checker checker) {
+        System.out.println(checker.getColumnIndex());
         int nextRow = checker.isBlack() ? checker.getRowIndex() + 1 : checker.getRowIndex() - 1;
 
         int[] nextColumns = {
-            checker.getColumnIndex() - 1,
-            checker.getColumnIndex() + 1
+                checker.getColumnIndex() - 1,
+                checker.getColumnIndex() + 1
         };
 
-        for (int columnIndex: nextColumns) {
+//        System.out.println("nextColumns: " + Arrays.toString(nextColumns));
+
+        for (int columnIndex : nextColumns) {
             // check if index is out of the board's bounds
             if (columnIndex < 0 || columnIndex > (SIZE - 1)) {
                 continue;
             }
+
+            System.out.println("setting adjacent tile: " + columnIndex);
 
             Tile adjacentTile = board.getTile(nextRow, columnIndex);
             boolean isTileOccupied = adjacentTile.hasChecker();
@@ -127,6 +128,11 @@ public class CheckersController extends GameController {
                 availableTiles.add(adjacentTile);
             }
         }
+    }
+
+    private void clearMoveOptions() {
+        availableTiles.forEach(Tile::removeAvailability);
+        availableTiles.clear();
     }
 
     private boolean checkMove(double x, double y, Checker checker) {

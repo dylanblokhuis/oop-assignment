@@ -1,6 +1,5 @@
 package com.novi.model;
 
-import com.novi.controller.CheckersController;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -11,15 +10,11 @@ import javafx.scene.shape.Circle;
  * Leerlijn: Object Oriented Programmeren
  */
 public class Checker extends StackPane {
-    private int columnIndex, rowIndex;
     private boolean isBlack;
 
-    public Checker(int columnIndex, int rowIndex, boolean isBlack) {
+    public Checker(boolean isBlack) {
         this.isBlack = isBlack;
         Circle stone = new Circle(15, isBlack ? Color.BLACK : Color.WHITE);
-
-        this.columnIndex = columnIndex;
-        this.rowIndex = rowIndex;
         getChildren().add(stone);
     }
 
@@ -28,10 +23,12 @@ public class Checker extends StackPane {
     }
 
     public int getColumnIndex() {
-        return columnIndex;
+        Tile tile = (Tile) getParent();
+        return tile.getColumnIndex();
     }
 
     public int getRowIndex() {
-        return rowIndex;
+        Tile tile = (Tile) getParent();
+        return tile.getRowIndex();
     }
 }
