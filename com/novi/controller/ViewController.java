@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 public class ViewController implements Initializable {
     @FXML
-    Text player1Text, player2Text, player1Score, player2Score;
+    Text player1Text, player2Text, player1Score, player2Score, currentPlayer;
 
     @FXML
     TabPane tabs;
@@ -38,7 +38,7 @@ public class ViewController implements Initializable {
         tabs.getSelectionModel().selectedItemProperty().addListener(
             (observable, oldValue, newValue) -> {
                 if (newValue == checkersTab) {
-                    new CheckersController(player1, player2).init(checkersPane);
+                    new CheckersController(player1, player2).init(checkersPane, currentPlayer);
                 }
             }
         );

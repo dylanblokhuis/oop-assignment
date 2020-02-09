@@ -52,17 +52,23 @@ public class Tile extends StackPane {
     }
 
     public Checker getChecker() {
-        return (Checker) getChildren().get(0);
+        try {
+            return (Checker) getChildren().get(0);
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     public void setChecker(Checker checker) {
         getChildren().addAll(checker);
-
-//        this.checker = checker;
     }
 
     public boolean hasChecker() {
-        return !getChildren().isEmpty() && getChildren().get(0) != null;
+        if (getChildren().isEmpty()) {
+            return false;
+        }
+
+        return getChecker() != null;
     }
 
     public boolean isAvailable() {
