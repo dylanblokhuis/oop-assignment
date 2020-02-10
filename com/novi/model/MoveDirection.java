@@ -1,5 +1,5 @@
 package com.novi.model;
 
 public enum MoveDirection {
-    LEFT, RIGHT
+    LEFT, RIGHT, UP, DOWN
 }
