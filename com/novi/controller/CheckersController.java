@@ -96,53 +96,67 @@ public class CheckersController extends GameController {
         return nextRow;
     }
 
-    private int getNextColumn(MoveDirection moveDirection, int columnIndex) {
-        // maybe add MoveDirection.BOTH
-        int nextColumn = moveDirection == MoveDirection.LEFT ? columnIndex - 1 : columnIndex + 1;
-
-        if (nextColumn < 0 || nextColumn > (SIZE - 1)) {
-            return -1;
-        }
-
-        return nextColumn;
-    }
-
-    private ArrayList<Tile> getAvailableTiles(Checker checker, boolean swapType) {
+    private ArrayList<Tile> getAvailableTiles(Checker checker, Checker parent) {
         ArrayList<Tile> availableTiles = new ArrayList<>();
         CheckerType checkerType = checker.getCheckerType();
 
-        if (swapType) {
-            if (checker.getCheckerType() == CheckerType.DARK) {
-                checkerType = CheckerType.CLEAR;
-            } else if (checker.getCheckerType() == CheckerType.CLEAR) {
-                checkerType = CheckerType.DARK;
-            }
+        if (parent != null) {
+            checkerType = parent.getCheckerType();
         }
 
         int rowIndex = getNextRow(checkerType, checker.getRowIndex());
-        int columnIndex = getNextColumn(MoveDirection.LEFT, checker.getColumnIndex());
+//        int columnIndex = getNextColumn(MoveDirection.LEFT, checker.getColumnIndex());
+        int[] columnIndexes = {
+                checker.getColumnIndex() - 1,
+                checker.getColumnIndex() + 1
+        };
 
-        if (rowIndex == -1 || columnIndex == -1) {
+        if (rowIndex == -1) {
             return availableTiles;
+        }
+
+        for (int columnIndex : columnIndexes) {
+            if (columnIndex < 0 || columnIndex > (SIZE - 1)) {
+                continue;
+            }
+
+            Tile adjacentTile = board.getTile(rowIndex, columnIndex);
+
+            if (!adjacentTile.hasChecker()) {
+                if (parent != null) {
+                    if (isLeft(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
+                        availableTiles.add(adjacentTile);
+                    }
+                } else {
+                    availableTiles.add(adjacentTile);
+                }
+
+            } else if (adjacentTile.hasChecker() && adjacentTile.getChecker().getCheckerType() != checkerType) {
+                System.out.println("YA");
+                System.out.println("THE ONE ROW: " + adjacentTile.getRowIndex());
+                System.out.println("THE ONE COL: " + adjacentTile.getColumnIndex());
+
+                availableTiles.addAll(getAvailableTiles(adjacentTile.getChecker(), checker));
+            }
         }
 
 //        System.out.println("NEXT ROW: " + rowIndex);
 //        System.out.println("NEXT COLUMN: " + columnIndex);
 
-        Tile adjacentTile = board.getTile(rowIndex, columnIndex);
-        if (!adjacentTile.hasChecker()) {
-            availableTiles.add(adjacentTile);
-        } else if (adjacentTile.hasChecker() && adjacentTile.getChecker().getCheckerType() != checkerType) {
-            System.out.println("YA");
-            //            availableTiles.addAll(getAvailableTiles(adjacentTile.getChecker(), true));
-
-        }
 
         return availableTiles;
     }
 
+    private boolean isRight(int columnIndexOld, int columnIndexNew) {
+        return (columnIndexOld + 2) == columnIndexNew;
+    }
+
+    private boolean isLeft(int columnIndexOld, int columnIndexNew) {
+        return (columnIndexOld - 2) == columnIndexNew;
+    }
+
     private void clearMoveOptions(Checker checker) {
-        getAvailableTiles(checker, false).forEach(Tile::removeAvailability);
+        getAvailableTiles(checker, null).forEach(Tile::removeAvailability);
     }
 
     private void startTurn(Player player) {
@@ -158,7 +172,7 @@ public class CheckersController extends GameController {
                 if (tile.hasChecker() && tile.getChecker().getCheckerType() == checkerType) {
                     Checker checker = tile.getChecker();
 
-                    if (getAvailableTiles(checker, false).size() > 0) {
+                    if (getAvailableTiles(checker, null).size() > 0) {
                         checker.highlight();
                     }
                 }
@@ -191,7 +205,7 @@ public class CheckersController extends GameController {
 
         selectedChecker = checker;
         selectedChecker.selected();
-        getAvailableTiles(selectedChecker, false).forEach(Tile::showAvailability);
+        getAvailableTiles(selectedChecker, null).forEach(Tile::showAvailability);
     }
 
     private void move(Tile tile) {
@@ -199,8 +213,9 @@ public class CheckersController extends GameController {
             return;
         }
 
-        if (getAvailableTiles(selectedChecker, false).contains(tile)) {
+        if (getAvailableTiles(selectedChecker, null).contains(tile)) {
             removeHighlights(selectedChecker.getCheckerType());
+            clearMoveOptions(selectedChecker);
 
             tile.setChecker(selectedChecker);
 

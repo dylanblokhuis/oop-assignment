@@ -83,6 +83,8 @@ public class Tile extends StackPane {
 
     public void removeAvailability() {
         isAvailable = false;
-        getChildren().remove(0);
+        if (!getChildren().isEmpty()) {
+            getChildren().remove(0);
+        }
     }
 }
