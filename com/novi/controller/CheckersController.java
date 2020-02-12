@@ -5,6 +5,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Dylan Blokhuis
@@ -16,9 +17,7 @@ public class CheckersController extends GameController {
 
     private Board board = new Board(SIZE);
     private Checker selectedChecker;
-    private Tile targetTile;
-//    private ArrayList<Tile> availableTiles = new ArrayList<Tile>();
-    private ArrayList<Checker> captured = new ArrayList<Checker>();
+    private Checker captured;
     private Text currentPlayerText;
 
     public CheckersController(Player player1, Player player2) {
@@ -125,25 +124,27 @@ public class CheckersController extends GameController {
             if (!adjacentTile.hasChecker()) {
                 if (parent != null) {
                     if (isLeft(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
+                        captured = checker;
                         availableTiles.add(adjacentTile);
+
+                        return availableTiles;
+                    } else if (isRight(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
+                        captured = checker;
+                        availableTiles.add(adjacentTile);
+
+                        return availableTiles;
                     }
                 } else {
-                    availableTiles.add(adjacentTile);
+                    if (captured == null) {
+                        availableTiles.add(adjacentTile);
+                    }
                 }
-
             } else if (adjacentTile.hasChecker() && adjacentTile.getChecker().getCheckerType() != checkerType) {
-                System.out.println("YA");
-                System.out.println("THE ONE ROW: " + adjacentTile.getRowIndex());
-                System.out.println("THE ONE COL: " + adjacentTile.getColumnIndex());
                 if (parent == null) {
                     availableTiles.addAll(getAvailableTiles(adjacentTile.getChecker(), checker));
                 }
             }
         }
-
-//        System.out.println("NEXT ROW: " + rowIndex);
-//        System.out.println("NEXT COLUMN: " + columnIndex);
-
 
         return availableTiles;
     }
@@ -167,18 +168,29 @@ public class CheckersController extends GameController {
     }
 
     private void highlightMovableCheckers(CheckerType checkerType) {
+        ArrayList<Checker> highlightableCheckers = new ArrayList<>();
+
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < SIZE; columnIndex++) {
                 Tile tile = board.getTile(rowIndex, columnIndex);
+
                 if (tile.hasChecker() && tile.getChecker().getCheckerType() == checkerType) {
                     Checker checker = tile.getChecker();
 
                     if (getAvailableTiles(checker, null).size() > 0) {
-                        checker.highlight();
+                        if (captured == null) {
+                            highlightableCheckers.add(checker);
+                        } else {
+                            highlightableCheckers = new ArrayList<>(Arrays.asList(checker));
+                        }
                     }
                 }
             }
         }
+
+        highlightableCheckers.forEach(checker -> {
+            checker.highlight();
+        });
     }
 
     private void removeHighlights(CheckerType checkerType) {
@@ -193,8 +205,6 @@ public class CheckersController extends GameController {
     }
 
     private void selectChecker(Checker checker) {
-        captured.clear();
-
         if (checker.getCheckerType() != currentPlayer.getCheckerType() || !checker.isHighlighted()) {
             return;
         }
@@ -223,14 +233,15 @@ public class CheckersController extends GameController {
             selectedChecker.deselect();
             selectedChecker = null;
 
-            if (captured.size() > 0) {
-                captured.forEach(checker -> {
-                    Tile tileOfCaptured = (Tile) checker.getParent();
-                    tileOfCaptured.getChildren().remove(checker);
-                    currentPlayer.addToCaptured(checker);
-                });
-                captured.clear();
+            if (captured != null) {
+                Tile tileOfCaptured = (Tile) captured.getParent();
+                if (!tileOfCaptured.getChildren().isEmpty()) {
+                    tileOfCaptured.getChildren().remove(captured);
+                    currentPlayer.addToCaptured(captured);
+                }
             }
+
+            captured = null;
 
             endTurn();
         }
