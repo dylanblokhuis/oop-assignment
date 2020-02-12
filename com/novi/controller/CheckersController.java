@@ -135,8 +135,9 @@ public class CheckersController extends GameController {
                 System.out.println("YA");
                 System.out.println("THE ONE ROW: " + adjacentTile.getRowIndex());
                 System.out.println("THE ONE COL: " + adjacentTile.getColumnIndex());
-
-                availableTiles.addAll(getAvailableTiles(adjacentTile.getChecker(), checker));
+                if (parent == null) {
+                    availableTiles.addAll(getAvailableTiles(adjacentTile.getChecker(), checker));
+                }
             }
         }
 
