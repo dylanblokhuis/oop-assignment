@@ -13,7 +13,7 @@ import java.util.Arrays;
  * Leerlijn: Object Oriented Programmeren
  */
 public class CheckersController extends GameController {
-    private static final int SIZE = 8;
+    public static final int SIZE = 8;
 
     private Board board = new Board(SIZE);
     private Checker selectedChecker;
@@ -85,11 +85,11 @@ public class CheckersController extends GameController {
 
     private ArrayList<Integer> getNextRows(CheckerType checkerType, int rowIndex, boolean isKing) {
         ArrayList<Integer> nextRows = new ArrayList<>();
-        nextRows.add(checkerType == CheckerType.DARK ? rowIndex + 1 : rowIndex - 1);
-
         if (isKing) {
             nextRows.add(checkerType == CheckerType.DARK ? rowIndex - 1 : rowIndex + 1);
         }
+
+        nextRows.add(checkerType == CheckerType.DARK ? rowIndex + 1 : rowIndex - 1);
 
         return nextRows;
     }
@@ -102,7 +102,9 @@ public class CheckersController extends GameController {
             checkerType = parent.getCheckerType();
         }
 
-        ArrayList<Integer> rowIndexes = new ArrayList<>(getNextRows(checkerType, checker.getRowIndex(), checker.isKing()));
+        ArrayList<Integer> rowIndexes = new ArrayList<>(
+                getNextRows(checkerType, checker.getRowIndex(), checker.isKing())
+        );
 
         int[] columnIndexes = {
                 checker.getColumnIndex() - 1,
@@ -240,6 +242,11 @@ public class CheckersController extends GameController {
                     tileOfCaptured.getChildren().remove(captured);
                     currentPlayer.addToCaptured(captured);
                 }
+
+                if (board.getCheckerTypeAmount(captured.getCheckerType()) == 0) {
+                    currentPlayer.addScore();
+                    setWinner(currentPlayer);
+                }
             }
 
             captured = null;
@@ -251,5 +258,9 @@ public class CheckersController extends GameController {
     private void endTurn() {
         switchPlayers();
         startTurn(currentPlayer);
+    }
+
+    private void setWinner(Player player) {
+        ViewController.popupWindow(player.getName());
     }
 }

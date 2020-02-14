@@ -15,7 +15,7 @@ public class Main extends Application {
 
         sceneController = new SceneController();
         sceneController.setStage(stage);
-        sceneController.startScene(loginScenePath);
+        sceneController.startScene(loginScenePath, "Welcome to checkers!");
     }
 
     /**

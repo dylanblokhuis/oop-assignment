@@ -40,7 +40,7 @@ public class LoginController implements Initializable {
         textFieldPlayer1.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && isReady()) {
                 try {
-                    transitionScene();
+                    startMainScene();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -50,7 +50,7 @@ public class LoginController implements Initializable {
         textFieldPlayer2.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER && isReady()) {
                 try {
-                    transitionScene();
+                    startMainScene();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -70,16 +70,16 @@ public class LoginController implements Initializable {
     }
 
     public void handleStartButton() throws IOException {
-        transitionScene();
+        startMainScene();
     }
 
-    private void transitionScene() throws IOException {
+    private void startMainScene() throws IOException {
         PlayerController playerController = new PlayerController();
         playerController.setPlayer1(player1);
         playerController.setPlayer2(player2);
 
         URL mainScenePath = getClass().getResource("/resources/fxml/Main.fxml");
         SceneController sceneController = Main.getSceneController();
-        sceneController.startScene(mainScenePath);
+        sceneController.startScene(mainScenePath, "Checkers");
     }
 }

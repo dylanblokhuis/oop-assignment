@@ -11,13 +11,12 @@ import java.net.URL;
 public class SceneController {
     private Stage stage;
 
-    public void startScene(URL path) throws IOException {
+    public void startScene(URL path, String title) throws IOException {
         Parent root = FXMLLoader.load(path);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add("resources/styles/Styles.css");
 
         stage.setResizable(false);
-        stage.setTitle("Minigames");
+        stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
     }

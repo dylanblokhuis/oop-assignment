@@ -8,6 +8,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,17 @@ public class ViewController implements Initializable {
     @FXML
     AnchorPane checkersPane;
 
+    public static void popupWindow(String test) {
+        try {
+            SceneController sceneController = new SceneController();
+            URL popupScenePath = ViewController.class.getResource("/resources/fxml/Popup.fxml");
+
+            sceneController.startScene(popupScenePath, "Message");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Player player1 = PlayerController.getPlayer1();
@@ -36,11 +48,11 @@ public class ViewController implements Initializable {
         player2Score.setText(player2.getScore() + "");
 
         tabs.getSelectionModel().selectedItemProperty().addListener(
-            (observable, oldValue, newValue) -> {
-                if (newValue == checkersTab) {
-                    new CheckersController(player1, player2).init(checkersPane, currentPlayer);
+                (observable, oldValue, newValue) -> {
+                    if (newValue == checkersTab) {
+                        new CheckersController(player1, player2).init(checkersPane, currentPlayer);
+                    }
                 }
-            }
         );
     }
 }
