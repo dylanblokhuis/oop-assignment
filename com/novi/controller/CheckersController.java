@@ -85,6 +85,7 @@ public class CheckersController extends GameController {
 
     private ArrayList<Integer> getNextRows(CheckerType checkerType, int rowIndex, boolean isKing) {
         ArrayList<Integer> nextRows = new ArrayList<>();
+
         if (isKing) {
             nextRows.add(checkerType == CheckerType.DARK ? rowIndex - 1 : rowIndex + 1);
         }
@@ -98,13 +99,17 @@ public class CheckersController extends GameController {
         ArrayList<Tile> availableTiles = new ArrayList<>();
         CheckerType checkerType = checker.getCheckerType();
 
-        if (parent != null) {
-            checkerType = parent.getCheckerType();
-        }
+        ArrayList<Integer> rowIndexes;
 
-        ArrayList<Integer> rowIndexes = new ArrayList<>(
-                getNextRows(checkerType, checker.getRowIndex(), checker.isKing())
-        );
+        if (parent != null) {
+            rowIndexes = new ArrayList<>(
+                    getNextRows(parent.getCheckerType(), checker.getRowIndex(), parent.isKing())
+            );
+        } else {
+            rowIndexes = new ArrayList<>(
+                    getNextRows(checkerType, checker.getRowIndex(), checker.isKing())
+            );
+        }
 
         int[] columnIndexes = {
                 checker.getColumnIndex() - 1,
@@ -127,10 +132,20 @@ public class CheckersController extends GameController {
 
                 if (!adjacentTile.hasChecker()) {
                     if (parent != null) {
+                        if (parent.getRowIndex() == adjacentTile.getRowIndex()) {
+                            /*
+                             * Skip this loop if parent shares the same row as the adjacent tile
+                             * since this breaks the rules of checkers.
+                             */
+                            continue;
+                        }
+
                         if (isLeft(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
                             captured = checker;
                             availableTiles.add(adjacentTile);
-                        } else if (isRight(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
+                        }
+
+                        if (isRight(parent.getColumnIndex(), adjacentTile.getColumnIndex())) {
                             captured = checker;
                             availableTiles.add(adjacentTile);
                         }
@@ -226,7 +241,6 @@ public class CheckersController extends GameController {
         if (getAvailableTiles(selectedChecker, null).contains(tile)) {
             removeHighlights(selectedChecker.getCheckerType());
             clearMoveOptions(selectedChecker);
-
             tile.setChecker(selectedChecker);
 
             if (tile.getRowIndex() == 0 || tile.getRowIndex() == 7) {
