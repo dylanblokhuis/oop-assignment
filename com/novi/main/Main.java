@@ -11,11 +11,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL loginScenePath = getClass().getResource("/resources/fxml/Login.fxml");
-
         sceneController = new SceneController();
         sceneController.setStage(stage);
-        sceneController.startScene(loginScenePath, "Welcome to checkers!");
+        sceneController.startScene("/resources/fxml/Login.fxml", "Welcome to checkers!");
     }
 
     /**

@@ -78,8 +78,7 @@ public class LoginController implements Initializable {
         playerController.setPlayer1(player1);
         playerController.setPlayer2(player2);
 
-        URL mainScenePath = getClass().getResource("/resources/fxml/Main.fxml");
         SceneController sceneController = Main.getSceneController();
-        sceneController.startScene(mainScenePath, "Checkers");
+        sceneController.startScene("/resources/fxml/Main.fxml", "Checkers");
     }
 }

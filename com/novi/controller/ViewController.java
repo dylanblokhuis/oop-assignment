@@ -3,13 +3,22 @@ package com.novi.controller;
 import com.novi.model.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewController implements Initializable {
@@ -24,17 +33,6 @@ public class ViewController implements Initializable {
 
     @FXML
     AnchorPane checkersPane;
-
-    public static void popupWindow(String test) {
-        try {
-            SceneController sceneController = new SceneController();
-            URL popupScenePath = ViewController.class.getResource("/resources/fxml/Popup.fxml");
-
-            sceneController.startScene(popupScenePath, "Message");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

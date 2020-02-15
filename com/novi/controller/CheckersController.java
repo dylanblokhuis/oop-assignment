@@ -1,11 +1,23 @@
 package com.novi.controller;
 
+import com.novi.main.Main;
+import com.novi.main.Modal;
 import com.novi.model.*;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Dylan Blokhuis
@@ -15,7 +27,7 @@ import java.util.Arrays;
 public class CheckersController extends GameController {
     public static final int SIZE = 8;
 
-    private Board board = new Board(SIZE);
+    private Board board;
     private Checker selectedChecker;
     private Checker captured;
     private Text currentPlayerText;
@@ -26,17 +38,20 @@ public class CheckersController extends GameController {
 
     public void init(AnchorPane pane, Text currentPlayerText) {
         pane.setPrefSize(SIZE * Tile.SIZE, SIZE * Tile.SIZE);
-        pane.getChildren().addAll(board);
         this.currentPlayerText = currentPlayerText;
 
         player1.setCheckerType(CheckerType.CLEAR);
         player2.setCheckerType(CheckerType.DARK);
 
         setBoard();
+        pane.getChildren().addAll(board);
+
         startTurn(player1);
     }
 
     private void setBoard() {
+        board = new Board(SIZE);
+
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < SIZE; columnIndex++) {
                 Tile tile = createTile(columnIndex, rowIndex);
@@ -180,10 +195,12 @@ public class CheckersController extends GameController {
     private void startTurn(Player player) {
         currentPlayer = player;
         currentPlayerText.setText(currentPlayer.getName());
-        highlightMovableCheckers(player.getCheckerType());
+
+        ArrayList<Checker> highlightedChecker = highlightMovableCheckers(player.getCheckerType());
+        highlightedChecker.forEach(Checker::highlight);
     }
 
-    private void highlightMovableCheckers(CheckerType checkerType) {
+    private ArrayList<Checker> highlightMovableCheckers(CheckerType checkerType) {
         ArrayList<Checker> highlightableCheckers = new ArrayList<>();
 
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
@@ -204,7 +221,7 @@ public class CheckersController extends GameController {
             }
         }
 
-        highlightableCheckers.forEach(Checker::highlight);
+        return highlightableCheckers;
     }
 
     private void removeHighlights(CheckerType checkerType) {
@@ -255,11 +272,11 @@ public class CheckersController extends GameController {
                 if (!tileOfCaptured.getChildren().isEmpty()) {
                     tileOfCaptured.getChildren().remove(captured);
                     currentPlayer.addToCaptured(captured);
-                }
 
-                if (board.getCheckerTypeAmount(captured.getCheckerType()) == 0) {
-                    currentPlayer.addScore();
-                    setWinner(currentPlayer);
+                    if (board.getCheckerTypeAmount(captured.getCheckerType()) == 0) {
+                        currentPlayer.addScore();
+                        setWinner(currentPlayer);
+                    }
                 }
             }
 
@@ -274,7 +291,26 @@ public class CheckersController extends GameController {
         startTurn(currentPlayer);
     }
 
+    private void restart() {
+        setBoard();
+        startTurn(player1);
+    }
+
     private void setWinner(Player player) {
-        ViewController.popupWindow(player.getName());
+        String modalTitle = player.getName() + " won!";
+        String modalMessage = "Congratulations, " + player.getName() + " you won!";
+        Modal modal = new Modal(modalTitle, modalMessage);
+
+        Button closeButton = new Button("Close");
+        Button restartButton = new Button("Restart");
+
+        closeButton.setOnMousePressed(event -> modal.close());
+        restartButton.setOnMousePressed(event -> {
+            modal.close();
+            restart();
+        });
+
+        modal.addNodes(Arrays.asList(closeButton, restartButton));
+        modal.showAndWait();
     }
 }
