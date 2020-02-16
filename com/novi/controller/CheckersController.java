@@ -1,6 +1,5 @@
 package com.novi.controller;
 
-import com.novi.main.Modal;
 import com.novi.model.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -20,7 +19,6 @@ public class CheckersController extends GameController {
     private Board board;
     private Checker selectedChecker;
     private Checker captured;
-    private Text currentPlayerText;
 
     public CheckersController(Player player1, Player player2) {
         super(player1, player2);
@@ -289,7 +287,7 @@ public class CheckersController extends GameController {
     private void setWinner(Player player) {
         String modalTitle = player.getName() + " won!";
         String modalMessage = "Congratulations, " + player.getName() + " you won!";
-        Modal modal = new Modal(modalTitle, modalMessage);
+        ModalController modal = new ModalController(modalTitle, modalMessage);
 
         Button closeButton = new Button("Close");
         Button restartButton = new Button("Restart");

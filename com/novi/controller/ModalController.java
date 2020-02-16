@@ -1,4 +1,4 @@
-package com.novi.main;
+package com.novi.controller;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -16,10 +16,10 @@ import java.util.List;
  * @date 15/02/2020
  * Leerlijn: Object Oriented Programmeren
  */
-public class Modal extends Stage {
+public class ModalController extends Stage {
     VBox box = new VBox(10);
 
-    public Modal(String title, String message) {
+    public ModalController(String title, String message) {
         setMinWidth(300);
         setTitle(title);
         initModality(Modality.APPLICATION_MODAL);

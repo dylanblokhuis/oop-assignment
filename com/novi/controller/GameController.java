@@ -2,16 +2,17 @@ package com.novi.controller;
 
 import com.novi.model.Player;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 
 /**
  * @author Dylan Blokhuis
  * @date 30-1-2020
  * Leerlijn: Object Oriented Programmeren
  */
-public class GameController {
+public abstract class GameController {
     protected Player player1;
     protected Player player2;
-
+    protected Text currentPlayerText;
     protected Player currentPlayer;
 
     public GameController(Player player1, Player player2) {
@@ -27,5 +28,5 @@ public class GameController {
         }
     }
 
-    public void init(AnchorPane pane) { }
+    public abstract void init(AnchorPane pane, Text currentPlayerText);
 }
