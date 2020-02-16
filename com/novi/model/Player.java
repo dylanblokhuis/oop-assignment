@@ -1,16 +1,19 @@
 package com.novi.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class Player {
+public class Player implements Observable {
     private String name;
     public int score;
     public CheckerType checkerType;
     public ArrayList<Checker> captured = new ArrayList<Checker>();
+    private List<PlayerObserver> observers;
 
     public Player(String name) {
         this.name = name;
         this.score = 0;
+        observers = new ArrayList<PlayerObserver>();
     }
 
     public String getName() {
@@ -23,6 +26,7 @@ public class Player {
 
     public void addScore() {
         this.score++;
+        this.notifyObserver();
     }
 
     public CheckerType getCheckerType() {
@@ -39,5 +43,19 @@ public class Player {
 
     public ArrayList<Checker> getCaptured() {
         return captured;
+    }
+
+    @Override
+    public void registerObserver(PlayerObserver observer) {
+        if (observer != null) {
+            this.observers.add(observer);
+        }
+    }
+
+    @Override
+    public void notifyObserver() {
+        for (PlayerObserver observer : observers) {
+            observer.update(this);
+        }
     }
 }

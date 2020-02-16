@@ -1,35 +1,18 @@
 package com.novi.controller;
 
 import com.novi.model.Player;
+import com.novi.model.PlayerObserver;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ViewController implements Initializable {
     @FXML
-    Text player1Text, player2Text, player1Score, player2Score, currentPlayer;
-
-    @FXML
-    TabPane tabs;
-
-    @FXML
-    Tab checkersTab;
+    Text player1Name, player2Name, player1Score, player2Score, currentPlayer;
 
     @FXML
     AnchorPane checkersPane;
@@ -39,18 +22,27 @@ public class ViewController implements Initializable {
         Player player1 = PlayerController.getPlayer1();
         Player player2 = PlayerController.getPlayer2();
 
-        player1Text.setText(player1.getName());
-        player2Text.setText(player2.getName());
+        PlayerTextObserver observer = new PlayerTextObserver();
+        player1.registerObserver(observer);
+        player2.registerObserver(observer);
+
+        player1Name.setText(player1.getName());
+        player2Name.setText(player2.getName());
 
         player1Score.setText(player1.getScore() + "");
         player2Score.setText(player2.getScore() + "");
 
-        tabs.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    if (newValue == checkersTab) {
-                        new CheckersController(player1, player2).init(checkersPane, currentPlayer);
-                    }
-                }
-        );
+        new CheckersController(player1, player2).init(checkersPane, currentPlayer);
+    }
+
+    private class PlayerTextObserver implements PlayerObserver {
+        @Override
+        public void update(Player player) {
+            if (player == PlayerController.getPlayer1()) {
+                player1Score.setText(player.getScore() + "");
+            } else {
+                player2Score.setText(player.getScore() + "");
+            }
+        }
     }
 }
