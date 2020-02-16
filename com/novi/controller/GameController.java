@@ -1,10 +1,13 @@
 package com.novi.controller;
 
-import com.novi.model.*;
-import javafx.scene.canvas.Canvas;
+import com.novi.model.Player;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 
+/**
+ * @author Dylan Blokhuis
+ * @date 30-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class GameController {
     protected Player player1;
     protected Player player2;

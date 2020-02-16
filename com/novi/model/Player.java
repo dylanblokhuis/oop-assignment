@@ -3,6 +3,11 @@ package com.novi.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Dylan Blokhuis
+ * @date 12-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class Player implements Observable {
     private String name;
     public int score;

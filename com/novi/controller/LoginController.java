@@ -12,6 +12,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * @author Dylan Blokhuis
+ * @date 14-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class LoginController implements Initializable {
     private Player player1;
     private Player player2;
@@ -23,8 +29,7 @@ public class LoginController implements Initializable {
     Button startButton;
 
     @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
+    public void initialize(URL location, ResourceBundle resources) {
         textFieldPlayer1.textProperty().addListener((observable, oldValue, newValue) -> {
             player1 = new Player(newValue);
 
@@ -58,8 +63,7 @@ public class LoginController implements Initializable {
         });
     }
 
-    public boolean isReady()
-    {
+    public boolean isReady() {
         if (player1 != null && !player1.getName().isEmpty() && player2 != null && !player2.getName().isEmpty()) {
             return true;
         } else if (!startButton.isDisabled()) {

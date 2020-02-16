@@ -2,6 +2,11 @@ package com.novi.controller;
 
 import com.novi.model.Player;
 
+/**
+ * @author Dylan Blokhuis
+ * @date 12-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class PlayerController {
     private static Player player1;
     private static Player player2;

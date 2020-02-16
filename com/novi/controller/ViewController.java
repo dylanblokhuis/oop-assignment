@@ -10,6 +10,12 @@ import javafx.scene.text.Text;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * @author Dylan Blokhuis
+ * @date 12-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class ViewController implements Initializable {
     @FXML
     Text player1Name, player2Name, player1Score, player2Score, currentPlayer;

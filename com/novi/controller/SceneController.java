@@ -3,12 +3,15 @@ package com.novi.controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
+/**
+ * @author Dylan Blokhuis
+ * @date 11-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class SceneController {
     private Stage stage;
 
@@ -23,13 +26,11 @@ public class SceneController {
         stage.show();
     }
 
-    public void setStage(Stage stage)
-    {
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-    public Stage getStage()
-    {
+    public Stage getStage() {
         return this.stage;
     }
 }

@@ -4,8 +4,11 @@ import com.novi.controller.SceneController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import java.net.URL;
-
+/**
+ * @author Dylan Blokhuis
+ * @date 10-1-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class Main extends Application {
     private static SceneController sceneController;
 
