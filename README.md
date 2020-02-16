@@ -2,7 +2,4 @@
 
 Running Java 1.8
 
-Application contains 2 individual games with 2 players.
-
-Game 1: Snake <br>
-Game 2: Space Invaders
+This assignment turned out to be an implementation of the Checkers board game.
