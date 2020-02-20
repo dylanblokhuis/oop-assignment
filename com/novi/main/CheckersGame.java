@@ -1,6 +1,6 @@
 package com.novi.main;
 
-import com.novi.controller.SceneController;
+import com.novi.controllers.StageController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -9,14 +9,14 @@ import javafx.stage.Stage;
  * @date 10-1-2020
  * Leerlijn: Object Oriented Programmeren
  */
-public class Main extends Application {
-    private static SceneController sceneController;
+public class CheckersGame extends Application {
+    private static StageController stageController;
 
     @Override
     public void start(Stage stage) throws Exception {
-        sceneController = new SceneController();
-        sceneController.setStage(stage);
-        sceneController.startScene("/resources/fxml/Login.fxml", "Welcome to checkers!");
+        stageController = new StageController();
+        stageController.setStage(stage);
+        stageController.startScene("/resources/fxml/Login.fxml", "Welcome to checkers!");
     }
 
     /**
@@ -31,8 +31,8 @@ public class Main extends Application {
         launch(args);
     }
 
-    public static SceneController getSceneController()
+    public static StageController getStageController()
     {
-        return sceneController;
+        return stageController;
     }
 }

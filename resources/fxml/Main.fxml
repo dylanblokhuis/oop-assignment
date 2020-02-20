@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <GridPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="360.0" prefWidth="541.0"
-          xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="com.novi.controller.ViewController">
+          xmlns="http://javafx.com/javafx/10.0.2-internal" fx:controller="com.novi.controllers.ViewController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="10.0" prefWidth="177.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="384.0" minWidth="10.0" prefWidth="356.0"/>

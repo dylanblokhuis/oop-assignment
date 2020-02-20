@@ -1,4 +1,4 @@
-package com.novi.controller;
+package com.novi.controllers;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +12,7 @@ import java.io.IOException;
  * @date 11-1-2020
  * Leerlijn: Object Oriented Programmeren
  */
-public class SceneController {
+public class StageController {
     private Stage stage;
 
     public void startScene(String path, String title) throws IOException {

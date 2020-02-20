@@ -1,4 +1,4 @@
-package com.novi.model;
+package com.novi.models;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -79,6 +80,7 @@ public class Checker extends StackPane {
     private ImageView kingImage(CheckerType checkerType) {
         InputStream inStream = getClass().getResourceAsStream(checkerType == CheckerType.DARK ? "/resources/images/white_crown.png" : "/resources/images/black_crown.png");
         Image imageObject = new Image(inStream);
+
         return new ImageView(imageObject);
     }
 

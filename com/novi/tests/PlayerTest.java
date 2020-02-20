@@ -1,6 +1,6 @@
 package com.novi.tests;
 
-import com.novi.model.Player;
+import com.novi.models.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

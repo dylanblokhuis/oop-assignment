@@ -1,6 +1,6 @@
-package com.novi.model;
+package com.novi.models;
 
-import com.novi.controller.CheckersController;
+import com.novi.controllers.CheckersController;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
@@ -26,7 +26,7 @@ public class Board extends GridPane {
 
         for (int rowIndex = 0; rowIndex < CheckersController.SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < CheckersController.SIZE; columnIndex++) {
-                Tile tile = getTile(rowIndex, columnIndex);
+                Tile tile = getTile(columnIndex, rowIndex);
                 if (tile.hasChecker() && tile.getChecker().getCheckerType() == checkerType) {
                     count++;
                 }
@@ -36,12 +36,12 @@ public class Board extends GridPane {
         return count;
     }
 
-    public Tile getTile(int row, int column) {
+    public Tile getTile(int column, int row) {
         Tile result = null;
         ObservableList<Node> children = getChildren();
 
         for (Node node : children) {
-            if (getRowIndex(node) == row && getColumnIndex(node) == column && node instanceof Tile) {
+            if (getColumnIndex(node) == column && getRowIndex(node) == row && node instanceof Tile) {
                 result = (Tile) node;
                 break;
             }

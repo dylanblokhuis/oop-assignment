@@ -1,7 +1,7 @@
-package com.novi.controller;
+package com.novi.controllers;
 
-import com.novi.model.Player;
-import com.novi.model.PlayerObserver;
+import com.novi.models.Player;
+import com.novi.models.PlayerObserver;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.AnchorPane;

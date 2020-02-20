@@ -1,7 +1,7 @@
-package com.novi.controller;
+package com.novi.controllers;
 
-import com.novi.main.Main;
-import com.novi.model.Player;
+import com.novi.main.CheckersGame;
+import com.novi.models.Player;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -63,7 +63,7 @@ public class LoginController implements Initializable {
         });
     }
 
-    public boolean isReady() {
+    private boolean isReady() {
         if (player1 != null && !player1.getName().isEmpty() && player2 != null && !player2.getName().isEmpty()) {
             return true;
         } else if (!startButton.isDisabled()) {
@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
         playerController.setPlayer1(player1);
         playerController.setPlayer2(player2);
 
-        SceneController sceneController = Main.getSceneController();
-        sceneController.startScene("/resources/fxml/Main.fxml", "Checkers");
+        StageController stageController = CheckersGame.getStageController();
+        stageController.startScene("/resources/fxml/Main.fxml", "Checkers");
     }
 }

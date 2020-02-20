@@ -1,7 +1,6 @@
-package com.novi.controller;
+package com.novi.controllers;
 
-import com.novi.model.*;
-import javafx.scene.control.Button;
+import com.novi.models.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
@@ -38,6 +37,7 @@ public class CheckersController extends GameController {
     }
 
     private void setBoard() {
+        System.out.println("new board");
         board = new Board(SIZE);
 
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
@@ -48,7 +48,7 @@ public class CheckersController extends GameController {
 
                 Checker checker = createChecker(columnIndex, rowIndex);
                 if (checker != null) {
-                    Tile boardTile = board.getTile(rowIndex, columnIndex);
+                    Tile boardTile = board.getTile(columnIndex, rowIndex);
 
                     boardTile.setChecker(checker);
                     addCheckerListeners(boardTile.getChecker());
@@ -57,10 +57,10 @@ public class CheckersController extends GameController {
         }
     }
 
-    private Tile createTile(int x, int y) {
-        boolean isTileOdd = (x + y) % 2 == 0;
+    private Tile createTile(int columnIndex, int rowIndex) {
+        boolean isTileOdd = (columnIndex + rowIndex) % 2 == 0;
 
-        return new Tile(x, y, isTileOdd);
+        return new Tile(columnIndex, rowIndex, isTileOdd);
     }
 
     private Checker createChecker(int columnIndex, int rowIndex) {
@@ -68,10 +68,10 @@ public class CheckersController extends GameController {
 
         boolean isEven = (columnIndex + rowIndex) % 2 != 0;
 
-        // should probably make this scale with size
+        // TODO: eventueel schalen met SIZE
         if (rowIndex < 3 && isEven) {
             checker = new Checker(CheckerType.DARK);
-        } else if (rowIndex >= 5 && isEven) {
+        } else if (rowIndex > 4 && isEven) {
             checker = new Checker(CheckerType.CLEAR);
         }
 
@@ -121,24 +121,24 @@ public class CheckersController extends GameController {
 
         for (int rowIndex : rowIndexes) {
             if (rowIndex < 0 || rowIndex > (SIZE - 1)) {
-                // skip loop if its out of the board's bounds
+                // sla de loop over wanneer de rowIndex buiten het bord is.
                 continue;
             }
 
             for (int columnIndex : columnIndexes) {
                 if (columnIndex < 0 || columnIndex > (SIZE - 1)) {
-                    // skip loop if its out of the board's bounds
+                    // sla de loop over wanneer de columnIndex buiten het bord is.
                     continue;
                 }
 
-                Tile adjacentTile = board.getTile(rowIndex, columnIndex);
+                Tile adjacentTile = board.getTile(columnIndex, rowIndex);
 
                 if (!adjacentTile.hasChecker()) {
                     if (parent != null) {
                         if (parent.getRowIndex() == adjacentTile.getRowIndex()) {
                             /*
-                             * Skip this loop if parent shares the same row as the adjacent tile
-                             * since this breaks the rules of checkers.
+                             * Sla deze loop over als de parent the zelfde rowIndex heeft
+                             * als de adjacentTile. Aangezien dit de regels van dammen breekt
                              */
                             continue;
                         }
@@ -168,19 +168,19 @@ public class CheckersController extends GameController {
         return availableTiles;
     }
 
-    private boolean isRight(int columnIndexOld, int columnIndexNew) {
-        return (columnIndexOld + 2) == columnIndexNew;
-    }
-
     private boolean isLeft(int columnIndexOld, int columnIndexNew) {
         return (columnIndexOld - 2) == columnIndexNew;
+    }
+
+    private boolean isRight(int columnIndexOld, int columnIndexNew) {
+        return (columnIndexOld + 2) == columnIndexNew;
     }
 
     private void clearMoveOptions(Checker checker) {
         getAvailableTiles(checker, null).forEach(Tile::removeAvailability);
     }
 
-    private void startTurn(Player player) {
+    protected void startTurn(Player player) {
         currentPlayer = player;
         currentPlayerText.setText(currentPlayer.getName());
 
@@ -193,16 +193,16 @@ public class CheckersController extends GameController {
 
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < SIZE; columnIndex++) {
-                Tile tile = board.getTile(rowIndex, columnIndex);
+                Tile tile = board.getTile(columnIndex, rowIndex);
 
                 if (tile.hasChecker() && tile.getChecker().getCheckerType() == checkerType) {
                     Checker checker = tile.getChecker();
 
                     if (getAvailableTiles(checker, null).size() > 0) {
-                        if (captured == null) {
-                            highlightableCheckers.add(checker);
-                        } else {
+                        if (captured != null) {
                             highlightableCheckers = new ArrayList<>(Arrays.asList(checker));
+                        } else {
+                            highlightableCheckers.add(checker);
                         }
                     }
                 }
@@ -215,7 +215,7 @@ public class CheckersController extends GameController {
     private void removeHighlights(CheckerType checkerType) {
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < SIZE; columnIndex++) {
-                Tile tile = board.getTile(rowIndex, columnIndex);
+                Tile tile = board.getTile(columnIndex, rowIndex);
                 if (tile.hasChecker() && tile.getChecker().getCheckerType() == checkerType) {
                     tile.getChecker().removeHighlight();
                 }
@@ -259,7 +259,6 @@ public class CheckersController extends GameController {
                 Tile tileOfCaptured = (Tile) captured.getParent();
                 if (!tileOfCaptured.getChildren().isEmpty()) {
                     tileOfCaptured.getChildren().remove(captured);
-                    currentPlayer.addToCaptured(captured);
 
                     if (board.getCheckerTypeAmount(captured.getCheckerType()) == 0) {
                         currentPlayer.addScore();
@@ -274,31 +273,13 @@ public class CheckersController extends GameController {
         }
     }
 
-    private void endTurn() {
+    protected void endTurn() {
         switchPlayers();
         startTurn(currentPlayer);
     }
 
-    private void restart() {
+    protected void restart() {
         setBoard();
         startTurn(player1);
-    }
-
-    private void setWinner(Player player) {
-        String modalTitle = player.getName() + " won!";
-        String modalMessage = "Congratulations, " + player.getName() + " you won!";
-        ModalController modal = new ModalController(modalTitle, modalMessage);
-
-        Button closeButton = new Button("Close");
-        Button restartButton = new Button("Restart");
-
-        closeButton.setOnMousePressed(event -> modal.close());
-        restartButton.setOnMousePressed(event -> {
-            modal.close();
-            restart();
-        });
-
-        modal.addNodes(Arrays.asList(closeButton, restartButton));
-        modal.showAndWait();
     }
 }

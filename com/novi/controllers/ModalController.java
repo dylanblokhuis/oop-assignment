@@ -1,4 +1,4 @@
-package com.novi.controller;
+package com.novi.controllers;
 
 import javafx.geometry.Pos;
 import javafx.scene.Node;

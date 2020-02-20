@@ -1,6 +1,6 @@
-package com.novi.controller;
+package com.novi.controllers;
 
-import com.novi.model.Player;
+import com.novi.models.Player;
 
 /**
  * @author Dylan Blokhuis

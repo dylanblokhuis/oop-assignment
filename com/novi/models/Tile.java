@@ -1,4 +1,4 @@
-package com.novi.model;
+package com.novi.models;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
