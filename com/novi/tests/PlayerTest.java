@@ -6,6 +6,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Dylan Blokhuis
+ * @date 20-2-2020
+ * Leerlijn: Object Oriented Programmeren
+ */
 public class PlayerTest {
 
     @Test

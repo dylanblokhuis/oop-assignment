@@ -16,7 +16,7 @@ import javafx.scene.shape.Circle;
  */
 public class Tile extends StackPane {
     public static final int SIZE = 45;
-//    private Checker checker;
+
     private int x, y;
     private boolean isDark;
     private boolean isAvailable = false;
