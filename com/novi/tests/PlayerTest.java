@@ -1,5 +1,6 @@
 package com.novi.tests;
 
+import com.novi.models.CheckerType;
 import com.novi.models.Player;
 import org.junit.Test;
 
@@ -8,7 +9,7 @@ import static org.junit.Assert.*;
 public class PlayerTest {
 
     @Test
-    public void getName() {
+    public void name() {
         System.out.println("getName");
         Player player = new Player("Dylan");
         String name = "Dylan";
@@ -29,5 +30,17 @@ public class PlayerTest {
         result = player.getScore();
         int newScore = 1;
         assertEquals(newScore, result);
+    }
+
+    @Test
+    public void checkerType() {
+        System.out.println("getCheckerType");
+        Player player = new Player("Dylan");
+        assertNull(player.getCheckerType());
+
+        System.out.println("setCheckerType");
+        player.setCheckerType(CheckerType.CLEAR);
+        CheckerType testCheckerType = CheckerType.CLEAR;
+        assertEquals(player.getCheckerType(), testCheckerType);
     }
 }
