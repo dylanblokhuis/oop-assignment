@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public class CheckersController extends GameController {
     public static final int SIZE = 8;
-
+    private AnchorPane pane;
     private Board board;
     private Checker selectedChecker;
     private Checker captured;
@@ -24,21 +24,21 @@ public class CheckersController extends GameController {
     }
 
     public void init(AnchorPane pane, Text currentPlayerText) {
-        pane.setPrefSize(SIZE * Tile.SIZE, SIZE * Tile.SIZE);
+        this.pane = pane;
+        this.pane.setPrefSize(SIZE * Tile.SIZE, SIZE * Tile.SIZE);
         this.currentPlayerText = currentPlayerText;
 
         player1.setCheckerType(CheckerType.CLEAR);
         player2.setCheckerType(CheckerType.DARK);
 
         setBoard();
-        pane.getChildren().addAll(board);
 
         startTurn(player1);
     }
 
     private void setBoard() {
-        System.out.println("new board");
         board = new Board(SIZE);
+        pane.getChildren().addAll(board);
 
         for (int rowIndex = 0; rowIndex < SIZE; rowIndex++) {
             for (int columnIndex = 0; columnIndex < SIZE; columnIndex++) {
@@ -257,18 +257,26 @@ public class CheckersController extends GameController {
 
             if (captured != null) {
                 Tile tileOfCaptured = (Tile) captured.getParent();
+                CheckerType capturedCheckerType = captured.getCheckerType();
+
                 if (!tileOfCaptured.getChildren().isEmpty()) {
                     tileOfCaptured.getChildren().remove(captured);
+                    captured = null;
 
-                    if (board.getCheckerTypeAmount(captured.getCheckerType()) == 0) {
+                    if (hasWon(capturedCheckerType)) {
                         currentPlayer.addScore();
                         setWinner(currentPlayer);
+                        return;
+                    } else if (isDraw()) {
+                        player1.addScore();
+                        player2.addScore();
+                        setDraw();
+                        return;
                     }
                 }
             }
 
             captured = null;
-
             endTurn();
         }
     }
@@ -281,5 +289,13 @@ public class CheckersController extends GameController {
     protected void restart() {
         setBoard();
         startTurn(player1);
+    }
+
+    private boolean hasWon(CheckerType checkerType) {
+        return board.getCheckerTypeAmount(checkerType) == 0 || highlightMovableCheckers(checkerType).size() == 0;
+    }
+
+    private boolean isDraw() {
+        return board.getCheckerTypeAmount(CheckerType.DARK) == 1 && board.getCheckerTypeAmount(CheckerType.CLEAR) == 1;
     }
 }

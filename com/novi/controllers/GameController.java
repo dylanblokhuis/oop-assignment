@@ -42,6 +42,16 @@ public abstract class GameController {
     protected void setWinner(Player player) {
         String modalTitle = player.getName() + " won!";
         String modalMessage = "Congratulations, " + player.getName() + " you won!";
+        setModal(modalTitle, modalMessage);
+    }
+
+    protected void setDraw() {
+        String modalTitle = "Draw!";
+        String modalMessage = "It's a draw!";
+        setModal(modalTitle, modalMessage);
+    }
+
+    private void setModal(String modalTitle, String modalMessage) {
         ModalController modal = new ModalController(modalTitle, modalMessage);
 
         Button closeButton = new Button("Close");
